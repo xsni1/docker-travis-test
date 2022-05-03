@@ -13,7 +13,7 @@ after_success:
   - docker build -t xsni1/server-prod ./server
   - docker build -t xsni1/worker-prod ./worker
   - docker build -t xsni1/nginx-prod ./nginx
-  - echo "DOCKER_PASSWORD" | docker login -u "DOCKER_LOGIN" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
   - docker push xsni1/client-prod
   - docker push xsni1/server-prod
   - docker push xsni1/worker-prod
