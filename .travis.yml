@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t client-tests -f ./client/Dockerfile.dev ./client
+
+scripts:
+  - docker run -e CI=true client-tests npm run test
+
+after_success:
+  - docker build -t xsni1/client-prod ./client
+  - docker build -t xsni1/server-prod ./server
+  - docker build -t xsni1/worker-prod ./worker
+  - docker build -t xsni1/nginx-prod ./nginx
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
+  - docker push xsni1/client-prod
+  - docker push xsni1/server-prod
+  - docker push xsni1/worker-prod
+  - docker push xsni1/nginx-prod
